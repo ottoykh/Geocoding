@@ -34,9 +34,6 @@ results.to_csv(output_file, index=True)
 table = results.to_html(index=True)
 display(HTML(table)) 
 ```
-Sample of the Reverse Geocoding with web-based medium:
-![me](https://lh7-us.googleusercontent.com/q0osidrJ4h0r_1d7VbQ8LMD9SXzJJCR2oJtfKOoUJB-QIzHG7C_ggvKLE0QDL46bS4NaGCyskPXQfoDLzof6-JKhkISkHsJ6v3MiFIVFCDrtfu2vzJzAbS6Xr06_UthsJvQEVJ0pfOIku_asyeQ_K5Rq_b-SIA)
-
 
 Direct Geocoding with ALS API (From Address to Spatial Refernce Coodinates)
 ```python 
