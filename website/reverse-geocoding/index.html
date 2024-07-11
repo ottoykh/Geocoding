@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Reverse Geocoding</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geoaddress Processor</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css">
+</head>
+
+<body>
+  <table>
+    <tr>
+      <td>
+        <div class="input-container">
+          <img src="https://lh7-us.googleusercontent.com/8Tk_Vl0b355LQgMm0YceQAQk5yd9xkHo_gONGQ2O6ad4FR_VFTRmGHLI0gV9BHHC4NYsfd7KdeyHtqf0CviaEjW6HBZBotHlzs6TihqNUfUHV1z1R1hKTa7i9fo64Ztq_QNvDNvH97lI2c5k4se9phhAZl6RHw" height="60">
+          <textarea id="input" rows="10" placeholder="Enter geoaddresses, one per line"></textarea>
+          <button onclick="processGeoaddresses()" class="submit-button">Process</button>
+        </div>
+        <div id="progress-bar">
+          <div id="progress-bar-fill"></div>
+        </div>
+      </td>
+      <td>
+        <div id="map-container">
+          <div id="map"></div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <p id="progress-text"></p>
+        <table id="results" border="1"></table>
+        <button onclick="exportToCSV()" class="submit-button">Export to CSV</button>
+        <button onclick="exportToExcel()" class="submit-button">Export to Excel</button>
+        <button onclick="exportToTxt()" class="submit-button">Export to TXT</button>
+      </td>
+    </tr>
+  </table>
+
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.6.0/proj4.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>
