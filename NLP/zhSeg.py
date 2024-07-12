@@ -110,3 +110,21 @@ def segment_address(file_path):
 
     df = pd.DataFrame(segmented_data)
     return df
+
+def address_to_list(segmented_data):
+    address_list = []
+
+    for _, row in segmented_data.iterrows():
+        address_components = [
+            row['area'],
+            row['district'],
+            row['sub_district'],
+            row['street_name'],
+            row['street_number']
+        ]
+
+        address_components = [comp for comp in address_components if comp]
+        address_string = ''.join(address_components)
+        address_list.append(address_string)
+
+    return address_list
