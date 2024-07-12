@@ -68,7 +68,6 @@ formatter.analyze_results(output_file, unprocessed_file)
 clean_data(output_file, clean_file)
 
 ```
-
 Still Developing ... 
 
 
@@ -91,11 +90,11 @@ Input : 香港薄扶林道５４號地下至２樓
 Output : 香港\薄扶林道\５４\號\地下\至\２樓
 
 ```python 
-from Geocoding.NLP.zhSeg import segment_input
+from Geocoding.NLP.zhSeg import segment_address
 
 #  Segment text file will return decompose the chinese address into sub-sets following the order, area, district, sub_district, street name, street number and building 
 
-segmented = segment_text_file(input_file)
+segmented = segment_address(input_file)
 display(segmented)
 ```
 original / area / district / sub_district / street_name / street_number / building
@@ -152,9 +151,6 @@ The API will return the user back in json format, that includes the following in
 Still developing... 
 
 
-
-Still Developing ... 
-
 ## API References for Geocoding 
 ### Address Lookup Service API
 ```
@@ -163,6 +159,7 @@ https://www.als.ogcio.gov.hk/lookup?q==[value]
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
 | `value` | `string` | **Not specific** either Chinese or English, but format matters for the search result |
+```
 
 Sample usage of searching the "government offices"
 ```
