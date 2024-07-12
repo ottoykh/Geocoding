@@ -9,13 +9,13 @@ Mainly there are two directions on the Geocoding in Hong Kong, 
 
 This package allows different end-use to adopt those APIs with fewer lines of code to reach a codeless API fetching and data interchange for Hong Kong geospatial data. 
 
-> Try out our webapp [geoaddress2xy](https://ottoykh.github.io/Geocoding/website/reverse-geocoding/index.html)  !
-
+> Try out our webapp [geoaddress2xy](https://ottoykh.github.io/Geocoding/website/reverse-geocoding/index.html).
 ## Features
 > Most of the feature will be developed in this late-July. 
 - Address formatting with NLP (Natural language processing) and segmentation 
 - Precise Address Lookup Service with Similary Check and Validations
 - Batch processing with code-less python package and envrionment
+
 ## Installation
 
 Simple Download and Plug in the Package with the following steps
@@ -42,6 +42,12 @@ results.to_csv(output_file, index=True)
 table = results.to_html(index=True)
 display(HTML(table)) 
 ```
+For the interactive web-based application, can either use the embeded website method with iframe to do the processing as well as the python coding based method. The following is the sample of the iframe code. 
+
+```python 
+%%html
+<iframe src="https://ottoykh.github.io/Geocoding/website/reverse-geocoding/index.html" width="100%" height="850"></iframe>
+```
 
 #### Direct Geocoding with ALS API (From Address to Spatial Refernce Coodinates)
 Direct geocoding is the process of transforming the address to spatial reference coordinates it can enable more in-depth spatial analysis to be applied with the georeferenced address to point-based spatial data. Still some of the challenges on the input format may be different and not in the ALS recognizable input, therefore this package has added a data formatting, cleaning and validation process to enhance the direct geocoding service in Hong Kong.
@@ -64,22 +70,85 @@ clean_data(output_file, clean_file)
 
 Still Developing ... 
 
+
 #### NLP (Natural language processing) for Address formatting 
 Most of the time, the Chinese addresses are grouped and fused. Therefore, it would be better that we classify the address into segments, format , and reconstruct the address string in the ALS recognizable input. In this step, the NLP can be adopted for the Chinese language strings. 
 
 ```python 
 from Geocoding.NLP.zhSeg import segment_text_file
 # input path directory
-file = '/content/sample.txt'
+input_file = '/content/sample.txt'
 
-#  Segment text file will return decompose the chinese address into sub-sets
-segmented = segment_text_file(file)
+#  Segment text file will return decompose the chinese address into segment 
+segmented = segment_text_file(input_file)
 display(segmented)
 ```
+Those address will be display in a table format, the following are some of the sample of the input and output. 
+
 Input : 香港薄扶林道５４號地下至２樓
 
-Output : 香港\薄扶林道\５\４\號\地下\至\２\樓
+Output : 香港\薄扶林道\５４\號\地下\至\２樓
 
+```python 
+from Geocoding.NLP.zhSeg import segment_input
+
+#  Segment text file will return decompose the chinese address into sub-sets following the order, area, district, sub_district, street name, street number and building 
+
+segmented = segment_text_file(input_file)
+display(segmented)
+```
+original / area / district / sub_district / street_name / street_number / building
+
+新界將軍澳唐賢街33號Capri地下G01號舖(部份)/ 新界 / 西貢	將軍澳 / 唐賢街 / 33號	
+
+
+#### Keyword based language process for Chinese Address formatting with FastAPI 
+The following is a trial for writing a new API to format those address with keyword based approches. The idea is clear that the address start with the area, district, sub_district, street, street number and end with the building name, then it would be simple to split those address and reformat it with a function from python and call into a API with FastAPI. A local host and deployed API with python has been tried out. User can run the file from the /NLP/api_trail1.py. 
+
+Step to host the api
+1. Install the package 
+```python 
+pip install fastapi uvicron
+```
+2. Open the /NLP/api_trail1.py file. 
+3. Go to the terminal and type : 
+
+```python 
+uvicron main.app --reload
+```
+4. The API is now running and hosting on local, you can input any address for the address formatting. 
+```python 
+http://127.0.0.1:8000/area/zh-hk/[input]
+```
+5. Address formatting json will be display as follow
+Input address:
+```
+九龍何文田迦密村街9號君逸山一樓
+```
+Output result:  
+```json
+[{"area":"九龍","district":"九龍城","sub_district":"何文田","street":["迦密村街9號"],"building":"君逸山一樓"}]
+```
+Check this for more information : http://127.0.0.1:8000/docs#/ after local hosting. 
+
+Format of the API in 
+```
+http://127.0.0.1:8000/area/zh-hk/[value]
+```
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `value` | `string` | **Specific**, Chinese |
+
+The API will return the user back in json format, that includes the following information:
+
+```
+├── area                
+├── district                
+├── sub_district            
+├── street               
+├── building
+```
+Still developing... 
 
 
 
@@ -213,12 +282,15 @@ Last but not least, the whole of Hong Kong has been divided into three major seg
 #### Chinese Address segmentation 
 
 Ongoing development 
+
+
 ## Roadmap
 
 -  Reverse geocoding with LandsD API (Both Website and Python)
 -  Direct geocoding formatting and data clearning (English and Chinese)
 -  Direct geocoding quality assurence with similary checking 
 -  Address typo or incorrect format similary suggestions (toward the ALS intelligence)
+
 ## Authors
 
 - [@ottoykh](https://www.github.com/ottoykh) Yu Kai Him Otto 
@@ -242,4 +314,6 @@ Geocoding related API
 Geocoding reference dataset 
 - [CSDI Place Name](https://portal.csdi.gov.hk/geoportal/?lang=en&datasetId=landsd_rcd_1648571595120_89752)
 - [CSDI Street Name](https://portal.csdi.gov.hk/geoportal/?lang=en&datasetId=landsd_rcd_1648633077960_97785)
+
+
 
