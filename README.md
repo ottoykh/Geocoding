@@ -68,6 +68,7 @@ formatter.analyze_results(output_file, unprocessed_file)
 clean_data(output_file, clean_file)
 
 ```
+
 Still Developing ... 
 
 
@@ -87,7 +88,7 @@ Those address will be display in a table format, the following are some of the s
 
 Input : 香港薄扶林道５４號地下至２樓
 
-Output : 香港\薄扶林道\５４\號\地下\至\２樓
+Output : 香港\薄扶林道\５４號\地下\至\２樓
 
 ```python 
 from Geocoding.NLP.zhSeg import segment_address
@@ -106,21 +107,21 @@ original / area / district / sub_district / street_name / street_number / buildi
 The following is a trial for writing a new API to format those address with keyword based approches. The idea is clear that the address start with the area, district, sub_district, street, street number and end with the building name, then it would be simple to split those address and reformat it with a function from python and call into a API with FastAPI. A local host and deployed API with python has been tried out. User can run the file from the /NLP/api_trail1.py. 
 
 Step to host the api
-1. Install the package 
+- Install the package 
 ```python 
 pip install fastapi uvicron
 ```
-2. Open the /NLP/api_trail1.py file. 
-3. Go to the terminal and type : 
+- Open the /NLP/api_trail1.py file. 
+- Go to the terminal and type : 
 
 ```python 
 uvicron main.app --reload
 ```
-4. The API is now running and hosting on local, you can input any address for the address formatting. 
+- The API is now running and hosting on local, you can input any address for the address formatting. 
 ```python 
 http://127.0.0.1:8000/area/zh-hk/[input]
 ```
-5. Address formatting json will be display as follow
+- Address formatting json will be display as follow
 Input address:
 ```
 九龍何文田迦密村街9號君逸山一樓
@@ -150,6 +151,9 @@ The API will return the user back in json format, that includes the following in
 ```
 Still developing... 
 
+
+
+Still Developing ... 
 
 ## API References for Geocoding 
 ### Address Lookup Service API
@@ -312,6 +316,4 @@ Geocoding related API
 Geocoding reference dataset 
 - [CSDI Place Name](https://portal.csdi.gov.hk/geoportal/?lang=en&datasetId=landsd_rcd_1648571595120_89752)
 - [CSDI Street Name](https://portal.csdi.gov.hk/geoportal/?lang=en&datasetId=landsd_rcd_1648633077960_97785)
-
-
 
