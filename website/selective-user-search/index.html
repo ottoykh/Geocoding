@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Selective User Search</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Map API based download</title>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+</head>
+
+<body>
+  <div class="controls-container">
+    <label for="id">ID:</label>
+    <input type="text" id="id" value="afcd_rcd_1635129924112_81508">
+    <label for="layer">Layer:</label>
+    <input type="text" id="layer" value="ctry_park">
+    <button id="fetchBtn">Fetch Data</button>
+    <button id="downloadBtn" onclick="downloadData()">Download Data</button>
+  </div>
+  <div id="loading">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2a10 10 0 110 20 10 10 0 010-20zm0 18a8 8 0 100-16 8 8 0 000 16z" fill="#333" />
+      <path d="M12 2a10 10 0 110 20V2z" fill="#333">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="2s" repeatCount="indefinite" />
+      </path>
+    </svg>
+    Loading data...
+  </div>
+  <div id="map"></div>
+  <div id="table-container">
+    <div id="table-content"></div>
+  </div>
+</body>
+
+</html>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>
