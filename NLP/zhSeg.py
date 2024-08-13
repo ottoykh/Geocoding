@@ -1,29 +1,19 @@
 import jieba
-import jieba.posseg as pseg
 import pandas as pd
-import sys
 
-# load csdi government data for the NLP in Hong Kong 
 jieba.load_userdict("/content/Geocoding/NLP/number.txt")
 jieba.load_userdict("/content/Geocoding/NLP/area.txt")
 jieba.load_userdict("/content/Geocoding/NLP/placename.txt")
 jieba.load_userdict("/content/Geocoding/NLP/Street_csdi.txt")
 jieba.load_userdict("/content/Geocoding/NLP/Street_data.txt")
-jieba.load_userdict("/content/Geocoding/NLP/Building_nt.txt")
-jieba.load_userdict("/content/Geocoding/NLP/Building_kh.txt")
+jieba.load_userdict("/content/Geocoding/NLP/Building/Building_nt.txt")
+jieba.load_userdict("/content/Geocoding/NLP/Building/Building_kh.txt")
 
-def segment_text_file(file_path):
-    with open(file_path, 'r', encoding='utf-8') as file:
-        text = file.read()
-    
-    lines = text.splitlines()
-    segmented_lines = []
-    for line in lines:
-        seg_list = jieba.lcut(line, cut_all=False)
-        segmented_lines.append(list(seg_list))
-    
-    df = pd.DataFrame(segmented_lines)
-    return df
+building_names = set()
+with open("/content/Building_merged.txt", 'r', encoding='utf-8') as f:
+    for line in f:
+        building_names.add(line.strip())
+
 
 def segment_address(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -32,7 +22,7 @@ def segment_address(file_path):
     lines = text.splitlines()
     segmented_data = []
     road_related_words = ['路', '道', '街', '巷', '橋', '隧道', '大道', '高速公路', '公路', '馬路', '徑']
-    
+
     areas = {
         '香港': {
             '中西區': ['堅尼地城', '石塘咀', '西營盤', '上環', '中環', '金鐘', '半山', '山頂'],
@@ -65,24 +55,30 @@ def segment_address(file_path):
         for district, sub_districts in districts.items():
             all_districts.append(district)
             all_districts.extend(sub_districts)
-    
+
     for line in lines:
-        words = pseg.cut(line)
+        words = jieba.lcut(line)
         street_name = []
         street_number = []
         district = ''
         sub_district = ''
         area = ''
+        building = ''
         number_found = False
-        
-        for word, flag in words:
-            if any(road_word in word for road_word in road_related_words):
+
+        for i, word in enumerate(words):
+            if '號' in word and not number_found:
+                street_number.append(word.split('號')[0] + '號')
+                number_found = True
+                if i + 1 < len(words):
+                    next_word = words[i + 1]
+
+                    building_keywords = ['居', '大廈', '園', '城', '樓', '苑', '閣', '別墅', '中心','匯']
+
+                    if any(keyword in next_word for keyword in building_keywords):
+                        building = next_word
+            elif any(road_word in word for road_word in road_related_words):
                 street_name.append(word)
-            elif (flag == 'm' or '號' in word) and not number_found:
-                street_number.append(word)
-                if '號' in word:
-                    number_found = True
-                    street_number[-1] = street_number[-1].split('號')[0] + '號'
             elif word in all_districts:
                 for area_name, districts in areas.items():
                     for district_name, sub_districts in districts.items():
@@ -97,34 +93,17 @@ def segment_address(file_path):
                             break
                     if area:
                         break
-        
-        if street_name or street_number or district or sub_district:
+
+        if street_name or street_number or district or sub_district or building:
             segmented_data.append({
                 'original': line,
                 'area': area,
                 'district': district,
                 'sub_district': sub_district,
                 'street_name': ' '.join(street_name),
-                'street_number': ' '.join(street_number)
+                'street_number': ' '.join(street_number),
+                'building': building
             })
 
     df = pd.DataFrame(segmented_data)
     return df
-
-def address_to_list(segmented_data):
-    address_list = []
-
-    for _, row in segmented_data.iterrows():
-        address_components = [
-            row['area'],
-            row['district'],
-            row['sub_district'],
-            row['street_name'],
-            row['street_number']
-        ]
-
-        address_components = [comp for comp in address_components if comp]
-        address_string = ''.join(address_components)
-        address_list.append(address_string)
-
-    return address_list
